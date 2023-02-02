@@ -1,0 +1,385 @@
+﻿<UserControl x:Class="EntityGeneratorWindows.UserControls.Download_MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:smtx="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
+             xmlns:Dialog="clr-namespace:EntityGeneratorWindows.UserControls"
+             mc:Ignorable="d" Width="1058" Height="530">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Flipper.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DialogHost.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <materialDesign:DrawerHost x:Name="DrawerHost" DrawerOpened="DrawerHost_DrawerOpened">
+
+        <materialDesign:DrawerHost.Style>
+            <Style TargetType="materialDesign:DrawerHost" BasedOn="{StaticResource {x:Type materialDesign:DrawerHost}}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsChecked, ElementName=BackgroundToggle}" Value="True">
+                        <Setter Property="OverlayBackground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </materialDesign:DrawerHost.Style>
+
+        <materialDesign:DrawerHost.RightDrawerContent>
+            <StackPanel Margin="0,0,0,16" Width="714">
+                <Grid Margin="0 10 0 0"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Top"
+                      Width="487">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                           HorizontalAlignment="Left"
+                           Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                           Text="生成設置"/>
+                    <StackPanel HorizontalAlignment="Left" Margin="0,10,0,0" Orientation="Horizontal" Grid.Row="1">
+                        <ComboBox x:Name="standardType" 
+                                  Style="{StaticResource MaterialDesignFilledComboBox}" 
+                                  materialDesign:HintAssist.Hint="core/standard版本類型"
+                                  Width="233" SelectionChanged="standardType_SelectionChanged">
+                            <ComboBoxItem Content=".Net Standard 2.0" Tag="netstandard2.0" />
+                            <ComboBoxItem Content=".Net Standard 2.1" Tag="netstandard2.1"/>
+                            <ComboBoxItem Content=".Net Core 2.1" Tag="netcoreapp2.1"/>
+                            <ComboBoxItem Content=".Net Core 3.1" Tag="netcoreapp3.1"/>
+                            <ComboBoxItem Content=".Net 5.0" Tag="net5.0" />
+                        </ComboBox>
+                        <ComboBox x:Name="frameworkType" 
+                                  Margin="20,0,0,0"
+                                  Style="{StaticResource MaterialDesignFilledComboBox}" 
+                                  materialDesign:HintAssist.Hint="framework版本類型"
+                                  Width="233">
+                            <ComboBoxItem Content=".Net Framework 4.6.1" Tag="net461" />
+                            <ComboBoxItem Content=".Net Framework 4.7.2" Tag="net472" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Grid.Row="2">
+                        <TextBox x:Name="txtPath"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="填寫或選擇生成路徑" FlowDirection="LeftToRight" Width="418"/>
+                        <Button Margin="10,0,0,0" x:Name="btnFolder" BorderBrush="#FFBE1707" Background="#FFBE1707" Cursor="Hand" Width="60" Height="40"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth1" Click="btnFolder_Click">
+                            <materialDesign:PackIcon Kind="Folder" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                        </Button>
+                    </StackPanel>
+                    <TextBox Margin="0,10,0,0" x:Name="txtProjName" Grid.Row="3"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="填寫項目名稱" FlowDirection="LeftToRight" TextChanged="txtProjName_TextChanged"/>
+                    <TextBox x:Name="txtModelName" Grid.Row="4" Margin="0,10,0,0"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="填寫實體層名稱" FlowDirection="LeftToRight"/>
+                    <TextBox x:Name="txtDalName" Grid.Row="5" Margin="0,10,0,0"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="填寫數據層名稱" FlowDirection="LeftToRight" Visibility="Hidden"/>
+                    <StackPanel
+                                Grid.Row="6"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="类首字母大寫"/>
+                        <ToggleButton x:Name="tbClassUpper" Margin="8 0 0 0"/>
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="字段首字母大寫" Margin="8 0 0 0"/>
+                        <ToggleButton x:Name="tbFieldUpper" Margin="8 0 0 0"/>
+                    </StackPanel>
+                    <StackPanel
+                                Grid.Row="7"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="只生成實體"/>
+                        <ToggleButton x:Name="tbmodel" Margin="8 0 0 0" Checked="tbmodel_Checked" />
+                    </StackPanel>
+                    <StackPanel
+                                Grid.Row="8"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="生成實體項目（包括csproj和sln）"/>
+                        <ToggleButton x:Name="tbproj"  Margin="8 0 0 0" Checked="tbproj_Checked" />
+                    </StackPanel>
+                    <StackPanel
+                                Grid.Row="9"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="生成實體+數據層項目"/>
+                        <ToggleButton x:Name="tball" Margin="8 0 0 0" Checked="tball_Checked" />
+                    </StackPanel>
+                    <TextBox x:Name="txtOutput" Margin="0,10,0,0"
+                             Grid.Row="10"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             Height="158"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             materialDesign:HintAssist.Hint="生成信息"
+                             VerticalAlignment="Center" Cursor="IBeam" CaretBrush="#FFBE1707" RenderTransformOrigin="0.5,0.5" IsReadOnly="True" >
+                        <TextBox.RenderTransform>
+                            <TransformGroup>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBox.RenderTransform>
+                    </TextBox>
+                    <StackPanel
+                                Grid.Row="11"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <Button x:Name="btnOpen"  Margin="0,0,10,0" materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                              Style="{StaticResource MaterialDesignFlatButton}"
+                              Content="打開文件夾" Width="120" Visibility="Hidden" Click="btnOpen_Click"/>
+                        <Button x:Name="btnRun" Margin="0,0,10,0" materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                              Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                              Content="生成" Width="90" Click="btnRun_Click"/>
+                        <Button Margin="0,0,0,0" materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                            Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                            CommandParameter="{x:Static Dock.Right}"
+                            Content="返回" Width="90" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </materialDesign:DrawerHost.RightDrawerContent>
+
+        <Grid>
+            <DockPanel LastChildFill="False" Margin="10,10,0,10" HorizontalAlignment="Left" Width="365">
+                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <materialDesign:Flipper
+                Style="{StaticResource MaterialDesignCardFlipper}"
+                VerticalAlignment="Top">
+                        <materialDesign:Flipper.FrontContent>
+                            <Button materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                        Margin="8"
+                        Content="登錄數據庫"/>
+                        </materialDesign:Flipper.FrontContent>
+                        <materialDesign:Flipper.BackContent>
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <materialDesign:ColorZone Padding="6">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Style="{StaticResource MaterialDesignToolForegroundButton}"
+                                                Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                                HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="ArrowLeft" HorizontalAlignment="Right" />
+                                        </Button>
+                                        <TextBlock Margin="8 0 0 0" VerticalAlignment="Center" Text="請填寫數據庫信息"/>
+                                    </StackPanel>
+                                </materialDesign:ColorZone>
+
+                                <Grid Grid.Row="1"
+                                      Margin="0 6 0 0"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Top"
+                                      Width="230">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                                        <ComboBox x:Name="comboSqltype" Width="200" materialDesign:HintAssist.Hint="數據庫類型" SelectionChanged="comboSqltype_SelectionChanged">
+                                            <ComboBoxItem Content="mysql" />
+                                            <ComboBoxItem Content="oracle" />
+                                            <ComboBoxItem Content="sqlserver" />
+                                            <ComboBoxItem Content="sqlite" />
+                                            <ComboBoxItem Content="postgres" />
+                                            <ComboBoxItem Content="mongodb" />
+                                        </ComboBox>
+                                        <materialDesign:PopupBox x:Name="popupHistory" StaysOpen="True" MaxHeight="300" Margin="10,0,0,0" IsEnabled="{Binding IsChecked, ElementName=PopupEnabled}" Opened="PopupBox_Opened">
+                                            <Grid Width="550" Margin="8,8,8,8">
+                                                <Grid.Resources>
+                                                    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                                        <Setter Property="materialDesign:HintAssist.IsFloating" Value="True" />
+                                                        <Setter Property="Margin" Value="8,8,8,8" />
+                                                    </Style>
+                                                </Grid.Resources>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock
+                                                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                                    Margin="8,8,8,16"
+                                                    Text="歷史記錄" />
+                                                <ListBox x:Name="listHistory" Grid.Row="1" IsEnabled="{Binding IsChecked, ElementName=EnableListBox}"
+                                                         materialDesign:TextFieldAssist.HasClearButton="True"
+                                                         MouseDoubleClick="listHistory_MouseDoubleClick" />
+                                                <StackPanel Grid.Row="2" Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <Button x:Name="btnDelHistory" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFlatButton}"
+                                                            ToolTip="刪除選中的歷史記錄"
+                                                            Width="100" 
+                                                            Content="刪除" Click="btnDelHistory_Click"/>
+                                                    <Button x:Name="btnClearHistory" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFlatButton}"
+                                                            ToolTip="清空選中的歷史記錄"
+                                                            Width="100" 
+                                                            Content="清空" Click="btnClearHistory_Click"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </materialDesign:PopupBox>
+                                    </StackPanel>
+
+                                    <TextBox x:Name="txtip"
+                                        Grid.Row="1"
+                                        materialDesign:HintAssist.Hint="IP地址"
+                                        materialDesign:HintAssist.IsFloating="True"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Margin="0 12 0 0"/>
+                                    <TextBox x:Name="txtport"
+                                        Grid.Row="2"
+                                        materialDesign:HintAssist.Hint="端口號"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        materialDesign:HintAssist.IsFloating="True"
+                                        Margin="0 12 0 0"/>
+                                    <TextBox x:Name="txtuser"
+                                        Grid.Row="3"
+                                        materialDesign:HintAssist.Hint="用戶名"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        materialDesign:HintAssist.IsFloating="True"
+                                        Margin="0 12 0 0"/>
+                                    <PasswordBox x:Name="txtpwd"
+                                        Grid.Row="4"
+                                        materialDesign:HintAssist.Hint="密碼"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        materialDesign:HintAssist.IsFloating="True"
+                                        Margin="0 12 0 0"/>
+                                    <StackPanel Grid.Row="5"
+                                                Orientation="Horizontal"
+                                                Margin="0 12 0 0"
+                                                HorizontalAlignment="Right">
+                                        <Button x:Name="btnTest"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                            ToolTip="測試能否連通數據庫"
+                                            materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                            materialDesign:RippleAssist.Feedback="#DD000000"
+                                            Content="測試連接" Click="btnTest_Click" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="6"
+                                                Orientation="Horizontal"
+                                                Margin="0 12 0 20"
+                                                HorizontalAlignment="Right">
+                                        <Button x:Name="btnLogin" Margin="0,0,10,0"
+                                            Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                            Click="btnLogin_OnClick"
+                                            Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                            ToolTip="登錄數據庫並查看信息"
+                                            Content="登錄"  Width="90"/>
+                                        <Button x:Name="btnCancel"
+                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                                materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                            ToolTip="取消登錄數據庫，使用當前設定"
+                                            Command="{x:Static materialDesign:Flipper.FlipCommand}"
+                                            Content="取消"  Width="90"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </materialDesign:Flipper.BackContent>
+                    </materialDesign:Flipper>
+                    <TreeView x:Name="treeView1" HorizontalAlignment="Stretch" Width="362" MouseDoubleClick="treeView1_MouseDoubleClick" Height="542"  />
+                    <CheckBox x:Name="checkbox1" Margin="5,10,0,10" Width="334" IsChecked="True" Content="全選" HorizontalAlignment="Center" Click="checkbox1_Click"/>
+                </StackPanel>
+            </DockPanel>
+            <DockPanel LastChildFill="False" Margin="380,10,67,10">
+                <DataGrid x:Name="datagrid1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                CanUserAddRows="False" AutoGenerateColumns="False"
+                HeadersVisibility="All" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                        Header="字段名稱"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True"
+                        Binding="{Binding filedName}" CanUserSort="False" Width="*"/>
+
+                        <DataGridTextColumn
+                        Header="字段類型"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}" IsReadOnly="True"
+                        Binding="{Binding filedType}" CanUserSort="False" Width="100"/>
+
+                        <DataGridTextColumn
+                        Header="字段備注"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True"
+                        Binding="{Binding filedComment}" CanUserSort="False" Width="*"/>
+
+                        <DataGridTextColumn
+                        Header="不允許空值"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" IsReadOnly="True"
+                        Binding="{Binding isNull}" CanUserSort="False" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+            <Button Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                    Style="{StaticResource MaterialDesignFloatingActionButton}"
+                    CommandParameter="{x:Static Dock.Right}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Height="50" Width="50" BorderBrush="#FFBE1707" Background="#FFBE1707" Cursor="Hand"
+                    Margin="20,0,10,0" HorizontalAlignment="Right">
+                <materialDesign:PackIcon Kind="ArrowRightBold" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Button>
+        </Grid>
+    </materialDesign:DrawerHost>
+
+</UserControl>

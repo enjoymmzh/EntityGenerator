@@ -1,0 +1,282 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:smtx="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
+             xmlns:local="clr-namespace:EntityGeneratorWindows.UserControls" x:Class="EntityGeneratorWindows.UserControls.JSON_MainView"
+             mc:Ignorable="d" d:DesignWidth="1366" Height="748">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBlock}" x:Key="HorizontalExpanderContentTextBlock">
+            <Setter Property="Opacity" Value=".68"/>
+            <Setter Property="Text" Value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="VerticalExpanderContentTextBlock" BasedOn="{StaticResource HorizontalExpanderContentTextBlock}">
+            <Setter Property="MaxWidth" Value="180"/>
+        </Style>
+
+        <Style TargetType="{x:Type Border}" x:Key="HorizontalDividerBorder">
+            <Setter Property="Background" Value="{DynamicResource MaterialDesignDivider}"/>
+            <Setter Property="UseLayoutRounding" Value="True"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Height" Value="1"/>
+        </Style>
+
+        <Style TargetType="{x:Type Border}" x:Key="VerticalDividerBorder" BasedOn="{StaticResource HorizontalDividerBorder}">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Width" Value="1"/>
+        </Style>
+    </UserControl.Resources>
+
+    <materialDesign:DrawerHost x:Name="DrawerHost" DrawerOpened="DrawerHost_DrawerOpened">
+
+        <materialDesign:DrawerHost.Style>
+            <Style TargetType="{x:Type materialDesign:DrawerHost}" BasedOn="{StaticResource {x:Type materialDesign:DrawerHost}}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsChecked, ElementName=BackgroundToggle}" Value="True">
+                        <Setter Property="OverlayBackground" Value="{DynamicResource PrimaryHueMidBrush}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </materialDesign:DrawerHost.Style>
+
+        <materialDesign:DrawerHost.RightDrawerContent>
+            <StackPanel Margin="0,0,0,16" Width="714">
+                <Grid Margin="0 30 0 0"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Top"
+                      Width="487">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                           HorizontalAlignment="Left"
+                           Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                           Text="生成設置"/>
+                    <StackPanel HorizontalAlignment="Left" Margin="0,10,0,0" Orientation="Horizontal" Grid.Row="1">
+                        <ComboBox x:Name="standardType" 
+                                  Style="{StaticResource MaterialDesignFilledComboBox}" 
+                                  materialDesign:HintAssist.Hint="core/standard版本類型"
+                                  Width="233" SelectionChanged="standardType_SelectionChanged">
+                            <ComboBoxItem Content=".Net Standard 2.0" Tag="netstandard2.0" />
+                            <ComboBoxItem Content=".Net Standard 2.1" Tag="netstandard2.1"/>
+                            <ComboBoxItem Content=".Net Core 2.1" Tag="netcoreapp2.1"/>
+                            <ComboBoxItem Content=".Net Core 3.1" Tag="netcoreapp3.1"/>
+                            <ComboBoxItem Content=".Net 5.0" Tag="net5.0" />
+                        </ComboBox>
+                        <ComboBox x:Name="frameworkType" 
+                                  Margin="20,0,0,0"
+                                  Style="{StaticResource MaterialDesignFilledComboBox}" 
+                                  materialDesign:HintAssist.Hint="framework版本類型"
+                                  Width="233">
+                            <ComboBoxItem Content=".Net Framework 4.6.1" Tag="net461" />
+                            <ComboBoxItem Content=".Net Framework 4.7.2" Tag="net472" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel HorizontalAlignment="Left" Margin="0,10,0,0" Orientation="Horizontal" Grid.Row="2">
+                        <TextBox x:Name="txtPath"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="填寫或選擇生成路徑" FlowDirection="LeftToRight" Width="418"/>
+                        <Button Margin="10,0,0,0" x:Name="btnFolder" BorderBrush="#FFBE1707" Background="#FFBE1707" Cursor="Hand" Width="60" Height="40" Click="btnFolder_Click" >
+                            <materialDesign:PackIcon Kind="Folder" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                        </Button>
+                    </StackPanel>
+                    <TextBox Margin="0,10,0,0" x:Name="txtProjName" Grid.Row="3"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="填寫項目名稱" FlowDirection="LeftToRight" TextChanged="txtProjName_TextChanged"/>
+                    <TextBox x:Name="txtModelName" Grid.Row="4" Margin="0,10,0,0"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="填寫實體層名稱" FlowDirection="LeftToRight"/>
+                    <StackPanel
+                                Grid.Row="5"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="强制首字母大寫"/>
+                        <ToggleButton x:Name="tbUpper" Margin="8 0 0 0"/>
+                    </StackPanel>
+                    <StackPanel
+                                Grid.Row="6"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="生成為單個文件"/>
+                        <ToggleButton x:Name="tbSingle" Margin="8 0 0 0"/>
+                    </StackPanel>
+                    <StackPanel
+                                Grid.Row="7"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="只生成實體"/>
+                        <ToggleButton x:Name="tbModel" Margin="8 0 0 0" Click="tbModel_Click"/>
+                    </StackPanel>
+                    <StackPanel
+                                Grid.Row="8"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="生成實體項目（包括csproj和sln）"/>
+                        <ToggleButton x:Name="tbProj" Margin="8 0 0 0" Click="tbProj_Click"/>
+                    </StackPanel>
+                    <TextBox x:Name="txtOutput" Margin="0,10,0,0"
+                             Grid.Row="9"
+                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             Height="158"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto"
+                             materialDesign:HintAssist.Hint="生成信息"
+                             VerticalAlignment="Center" Cursor="IBeam" CaretBrush="#FFBE1707" RenderTransformOrigin="0.5,0.5" IsReadOnly="True" >
+                        <TextBox.RenderTransform>
+                            <TransformGroup>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </TextBox.RenderTransform>
+                    </TextBox>
+                    <StackPanel
+                                Grid.Row="10"
+                                Orientation="Horizontal"
+                                Margin="0,10,0,0"
+                                HorizontalAlignment="Right">
+                        <Button x:Name="btnOpen" Margin="0,0,10,0"
+                              Style="{StaticResource MaterialDesignFlatButton}"
+                              Content="打開文件夾" Width="120" Visibility="Hidden" Click="btnOpen_Click"/>
+                        <Button x:Name="btnRun" Margin="0,0,10,0"
+                              Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                              Content="生成" Width="90" Click="btnRun_Click"/>
+                        <Button x:Name="btnReturn" Margin="0,0,0,0"
+                            Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                            CommandParameter="{x:Static Dock.Right}"
+                            Content="返回" Width="90" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </materialDesign:DrawerHost.RightDrawerContent>
+
+        <Grid Margin="0,0,0,10">
+            <StackPanel Cursor="IBeam">
+                <Expander HorizontalAlignment="Stretch" Header="從WEB請求JSON">
+                    <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox x:Name="combobox1" Width="111" Height="43" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FlowDirection="LeftToRight">
+                                <ComboBoxItem Content="POST" />
+                                <ComboBoxItem Content="GET" />
+                            </ComboBox>
+                            <TextBox x:Name="txturl" Margin="10,0,0,0"
+                            Style="{StaticResource MaterialDesignFilledTextBox}"
+                            VerticalAlignment="Stretch"
+                            AcceptsReturn="True"
+                            TextWrapping="Wrap"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            materialDesign:HintAssist.Hint="請在這裏輸入url" Width="1131" VerticalContentAlignment="Stretch" FlowDirection="LeftToRight"/>
+                        </StackPanel>
+                        <TextBox x:Name="txtHeader" Margin="0,5,0,5"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                materialDesign:TextFieldAssist.HasClearButton="True"
+                                materialDesign:HintAssist.Hint="添加header，如果沒有可不填，格式爲：Authorization,Bearer123456; 用半角分號區隔多個header，用半角逗號區隔鍵和值"
+                                IsEnabled="True" Cursor="IBeam" CaretBrush="#FFBE1707" Height="57"/>
+                        <TextBox x:Name="txtReq"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                materialDesign:TextFieldAssist.HasClearButton="True"
+                                materialDesign:HintAssist.Hint="如果是post請在此添加參數"
+                                IsEnabled="True" Cursor="IBeam" CaretBrush="#FFBE1707" Height="164"/>
+                        <Button x:Name="btnReq"
+                                Style="{DynamicResource MaterialDesignRaisedButton}"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                Margin="0,5,0,0"
+                                ToolTip="請求接口並獲取JSON數據"
+                                Content="請求" Foreground="White" Background="#FFBE1707" BorderBrush="#FFBE1707" Cursor="Hand" Click="btnReq_Click" />
+                    </StackPanel>
+                </Expander>
+                <StackPanel Orientation="Horizontal" Height="592">
+                    <StackPanel Orientation="Horizontal" Height="622" Width="1365">
+                        <TextBox x:Name="txtOrigin"
+                                 Margin="50,0,0,0"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Height="550"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Auto"
+                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                 materialDesign:HintAssist.Hint="請從WEB請求或複製JSON到文本框"
+                                 IsEnabled="True" Width="529" VerticalAlignment="Stretch" Cursor="IBeam" CaretBrush="#FFBE1707" />
+                        <Button x:Name="btnTran" 
+                                Margin="20,0,0,0" 
+                                Height="50" 
+                                Width="50" 
+                                materialDesign:HintAssist.Hint="將左側JSON格式化并在右側輸出"
+                                BorderBrush="#FFBE1707" 
+                                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" 
+                                Style="{StaticResource MaterialDesignIconButton}"
+                                Cursor="Hand" Click="btnTran_Click">
+                            <materialDesign:PackIcon Kind="FormatHorizontalAlignRight" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                        </Button>
+                        <TextBox x:Name="txtFormat"
+                                 Margin="20,0,0,0"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Height="550"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                materialDesign:HintAssist.Hint="格式化JSON"
+                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                IsEnabled="True" Width="529" CaretBrush="#FFBE1707" Cursor="IBeam" />
+                        <Button x:Name="btnGenerate"
+                                materialDesign:HintAssist.Hint="將JSON轉換爲實體"
+                            Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                            CommandParameter="{x:Static Dock.Right}"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                                Style="{StaticResource MaterialDesignFloatingActionButton}"
+                            Height="50" Width="50" Background="#FFBE1707" BorderBrush="#FFBE1707" Cursor="Hand"
+                            Margin="20,0,0,0">
+                            <materialDesign:PackIcon Kind="ArrowRightBold" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                        </Button>
+
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </materialDesign:DrawerHost>
+</UserControl>
